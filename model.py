@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
-
+import pdb
 
 class CNN_Text(nn.Module):
     
@@ -55,4 +55,5 @@ class CNN_Text(nn.Module):
         '''
         x = self.dropout(x)  # (N, len(Ks)*Co)
         logit = self.fc1(x)  # (N, C)
+        # pdb.set_trace()
         return logit

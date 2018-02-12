@@ -19,6 +19,7 @@ class TarDataset(data.Dataset):
     @classmethod
     def download_or_unzip(cls, root):
         path = os.path.join(root, cls.dirname)
+        '''
         if not os.path.isdir(path):
             tpath = os.path.join(root, cls.filename)
             if not os.path.isfile(tpath):
@@ -27,6 +28,7 @@ class TarDataset(data.Dataset):
             with tarfile.open(tpath, 'r') as tfile:
                 print('extracting')
                 tfile.extractall(root)
+        '''
         return os.path.join(path, '')
 
 

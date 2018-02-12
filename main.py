@@ -8,7 +8,11 @@ import torchtext.datasets as datasets
 import model
 import train
 import mydatasets
+import pdb
+import logging
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='output.log',level=logging.INFO)
 
 parser = argparse.ArgumentParser(description='CNN text classificer')
 # learning
@@ -71,7 +75,8 @@ print("\nLoading data...")
 text_field = data.Field(lower=True)
 label_field = data.Field(sequential=False)
 train_iter, dev_iter = mr(text_field, label_field, device=-1, repeat=False)
-# train_iter, dev_iter, test_iter = sst(text_field, label_field, device=-1, repeat=False)
+#train_iter, dev_iter, test_iter = sst(text_field, label_field, device=-1, repeat=False)
+# train_iter, dev_iter, test_iter = testing(text_field, label_field, device=-1, repeat=False)
 
 
 # update args and print
@@ -99,8 +104,13 @@ if args.cuda:
 
 # train or predict
 if args.predict is not None:
-    label = train.predict(args.predict, cnn, text_field, label_field, args.cuda)
-    print('\n[Text]  {}\n[Label] {}\n'.format(args.predict, label))
+    try:
+        label, first, second, conf = train.predict(args.predict, cnn, text_field, label_field, args.cuda)
+        print('\n[Text]  {}\n[Label] {}\n[First]   {}\n'.format(args.predict, label, first))
+        logger.info('\t'.join([args.predict, label, str(float(first)), str(float(second)), str(conf)]))
+    # print('\t'.join([args.predict, label, str(float(first))]))
+    except:
+        logger.info('item failed')
 elif args.test:
     try:
         train.eval(test_iter, cnn, args) 

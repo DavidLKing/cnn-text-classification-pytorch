@@ -3,7 +3,7 @@ import sys
 import torch
 import torch.autograd as autograd
 import torch.nn.functional as F
-
+import pdb
 
 def train(train_iter, dev_iter, model, args):
     if args.cuda:
@@ -66,7 +66,6 @@ def eval(data_iter, model, args):
 
         logit = model(feature)
         loss = F.cross_entropy(logit, target, size_average=False)
-
         avg_loss += loss.data[0]
         corrects += (torch.max(logit, 1)
                      [1].view(target.size()).data == target.data).sum()
@@ -91,11 +90,25 @@ def predict(text, model, text_field, label_feild, cuda_flag):
     x = autograd.Variable(x, volatile=True)
     if cuda_flag:
         x = x.cuda()
-    print(x)
+    #print("---0---")
+    #print(x)
     output = model(x)
-    _, predicted = torch.max(output, 1)
-    return label_feild.vocab.itos[predicted.data[0][0]+1]
-
+    first, predicted = torch.max(output, 1)
+    second, other_predicted = torch.min(output, 1)
+    '''
+    print("---1---")
+    print(first)
+    print(predicted)
+    print("---2---")
+    print(label_feild.vocab.itos)
+    print("---3---")
+    print(predicted.data)
+    print("---4---")
+    print(output)
+    '''
+    # pdb.set_trace()
+    return label_feild.vocab.itos[predicted.data[0]+1], first, second, abs(float(first) - float(second))
+    #return label_feild.vocab.itos[predicted.data[0][0]+1]
 
 def save(model, save_dir, save_prefix, steps):
     if not os.path.isdir(save_dir):

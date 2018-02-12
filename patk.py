@@ -35,8 +35,10 @@ def patk(rankedData, num):
             # "negToHum", negToHum / num, '\n',
             # "negToMay", (negToMay + negToHum) /num, '\n',
             "posToHum", posToHum / num, '\n',
-            # "posToMay", posToMay / num, '\n',
-            "negToComp", (negToComp + negToMay) / num, '\n')#,
+            "\t", posToHum, "correct out of", num, '\n',
+            "posToMay", (posToHum + posToMay) / num, '\n',
+            "\t", posToHum + posToMay, "correct out of", num)#,
+            # "negToComp", (negToComp + negToMay) / num, '\n')#,
             # "posToComp", posToComp / num)
             # "average", (negToComp + negToMay + posToHum) / num)
 
@@ -51,4 +53,3 @@ patk(data, 50)
 patk(data, 100)
 
 
-pdb.set_trace()

@@ -107,7 +107,7 @@ def predict(text, model, text_field, label_feild, cuda_flag):
     print(output)
     '''
     # pdb.set_trace()
-    return label_feild.vocab.itos[predicted.data[0]+1], first, second, abs(float(first) - float(second))
+    return label_feild.vocab.itos[predicted.data[0]+1], first, second, str(float(first) - float(second))
     #return label_feild.vocab.itos[predicted.data[0][0]+1]
 
 def save(model, save_dir, save_prefix, steps):

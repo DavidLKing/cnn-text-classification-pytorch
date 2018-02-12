@@ -1,4 +1,7 @@
+This is David King's mockup. The original README has not been modified besides this line:
+
 ## Introduction
+
 This is the implementation of Kim's [Convolutional Neural Networks for Sentence Classification](https://arxiv.org/abs/1408.5882) paper in PyTorch.
 
 1. Kim's implementation of the model in Theano:

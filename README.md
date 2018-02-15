@@ -1,3 +1,5 @@
+This is a fork of Shawn1993's original implementations! --DLK
+
 ## Introduction
 This is the implementation of Kim's [Convolutional Neural Networks for Sentence Classification](https://arxiv.org/abs/1408.5882) paper in PyTorch.
 

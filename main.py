@@ -2,6 +2,7 @@
 import os
 import argparse
 import datetime
+import logging
 import torch
 import torchtext.data as data
 import torchtext.datasets as datasets
@@ -39,6 +40,9 @@ parser.add_argument('-predict', type=str, default=None, help='predict the senten
 parser.add_argument('-test', action='store_true', default=False, help='train or test')
 args = parser.parse_args()
 
+
+# Adding logging
+logger = logging.getLogger(__name__)
 
 # load SST dataset
 '''

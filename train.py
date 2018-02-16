@@ -1,9 +1,12 @@
 import os
 import sys
+import logging
+import pdb
 import torch
 import torch.autograd as autograd
 import torch.nn.functional as F
 
+logger = logging.getLogger(__name__)
 
 def train(train_iter, dev_iter, model, args):
     if args.cuda:
@@ -94,6 +97,7 @@ def predict(text, model, text_field, label_feild, cuda_flag):
     #print("---0---")
     #print(x)
     output = model(x)
+    pdb.set_trace()
     first, predicted = torch.max(output, 1)
     '''
     print("---1---")

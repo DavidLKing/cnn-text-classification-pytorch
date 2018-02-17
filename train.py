@@ -7,6 +7,7 @@ import torch.autograd as autograd
 import torch.nn.functional as F
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(filename='train.log',level=logging.DEBUG)
 
 def train(train_iter, dev_iter, model, args):
     if args.cuda:
@@ -73,6 +74,8 @@ def eval(data_iter, model, args):
         avg_loss += loss.data[0]
         corrects += (torch.max(logit, 1)
                      [1].view(target.size()).data == target.data).sum()
+        for i in logit:
+            logger.info('\t'.join([str(float(x)) for x in i]))
 
     size = len(data_iter.dataset)
     avg_loss /= size
@@ -97,7 +100,7 @@ def predict(text, model, text_field, label_feild, cuda_flag):
     #print("---0---")
     #print(x)
     output = model(x)
-    pdb.set_trace()
+    logger.info('\t'.join([str(float(x)) for x in output[0]]))
     first, predicted = torch.max(output, 1)
     '''
     print("---1---")

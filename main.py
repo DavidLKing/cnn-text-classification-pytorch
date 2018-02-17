@@ -37,12 +37,15 @@ parser.add_argument('-no-cuda', action='store_true', default=False, help='disabl
 # option
 parser.add_argument('-snapshot', type=str, default=None, help='filename of model snapshot [default: None]')
 parser.add_argument('-predict', type=str, default=None, help='predict the sentence given')
+parser.add_argument('-log', type=str, default='log.txt', help='Logging file, default = log.txt')
 parser.add_argument('-test', action='store_true', default=False, help='train or test')
 args = parser.parse_args()
 
 
 # Adding logging
 logger = logging.getLogger(__name__)
+logging.basicConfig(filename=args.log,level=logging.DEBUG)
+
 
 # load SST dataset
 '''

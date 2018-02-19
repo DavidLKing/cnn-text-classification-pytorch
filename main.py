@@ -3,6 +3,7 @@ import os
 import argparse
 import datetime
 import logging
+import pdb
 import torch
 import torchtext.data as data
 import torchtext.datasets as datasets
@@ -89,6 +90,7 @@ text_field = data.Field(lower=True)
 label_field = data.Field(sequential=False)
 train_iter, dev_iter = mr(text_field, label_field, device=-1, repeat=False)
 dump, test_iter = getTest(text_field, label_field, device=-1, repeat=False)
+pdb.set_trace()
 #train_iter, dev_iter, test_iter = sst(text_field, label_field, device=-1, repeat=False)
 
 

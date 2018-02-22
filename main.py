@@ -40,7 +40,7 @@ parser.add_argument('-snapshot', type=str, default=None, help='filename of model
 parser.add_argument('-predict', type=str, default=None, help='predict the sentence given')
 parser.add_argument('-log', type=str, default='log.txt', help='Logging file, default = log.txt')
 parser.add_argument('-test', action='store_true', default=False, help='train or test')
-parser.add_argument('-conf', action='store_true', default=False, help='confidence test')
+# parser.add_argument('-conf', action='store_true', default=False, help='confidence test')
 args = parser.parse_args()
 # pdb.set_trace()
 
@@ -100,10 +100,10 @@ print("\nLoading data...")
 text_field = data.Field(lower=True)
 label_field = data.Field(sequential=False)
 train_iter, dev_iter = mr(text_field, label_field, device=-1, repeat=False)
-if args.test:
-    dump, test_iter = getTest(text_field, label_field, device=-1, repeat=False)
-elif args.conf:
-    dump, test_iter = getConf(text_field, label_field, device=-1, repeat=False)
+# if args.test:
+dump, test_iter = getTest(text_field, label_field, device=-1, repeat=False)
+# elif args.conf:
+#     dump, test_iter = getConf(text_field, label_field, device=-1, repeat=False)
 #train_iter, dev_iter, test_iter = sst(text_field, label_field, device=-1, repeat=False)
 
 
@@ -139,11 +139,11 @@ elif args.test:
         train.eval(test_iter, cnn, args) 
     except Exception as e:
         print("\nSorry. The test dataset doesn't  exist.\n")
-elif args.conf:
-    try:
-        train.eval(test_iter, cnn, args)
-    except Exception as e:
-        print("\nSorry. The test dataset doesn't  exist.\n")
+# elif args.conf:
+#     try:
+#         train.eval(test_iter, cnn, args)
+#     except Exception as e:
+#         print("\nSorry. The test dataset doesn't  exist.\n")
 else:
     print()
     try:

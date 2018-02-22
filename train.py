@@ -88,33 +88,38 @@ def eval(data_iter, model, args):
 
 
 def predict(text, model, text_field, label_feild, cuda_flag):
-    assert isinstance(text, str)
-    model.eval()
-    # text = text_field.tokenize(text)
-    text = text_field.preprocess(text)
-    text = [[text_field.vocab.stoi[x] for x in text]]
-    x = text_field.tensor_type(text)
-    x = autograd.Variable(x, volatile=True)
-    if cuda_flag:
-        x = x.cuda()
-    #print("---0---")
-    #print(x)
-    output = model(x)
-    logger.info('\t'.join([str(float(x)) for x in output[0]]))
-    first, predicted = torch.max(output, 1)
-    '''
-    print("---1---")
-    print(first)
-    print(predicted)
-    print("---2---")
-    print(label_feild.vocab.itos)
-    print("---3---")
-    print(predicted.data)
-    print("---4---")
-    print(output)
-    '''
-    return label_feild.vocab.itos[predicted.data[0]+1]
-    #return label_feild.vocab.itos[predicted.data[0][0]+1]
+    try:
+        assert isinstance(text, str)
+        model.eval()
+        # text = text_field.tokenize(text)
+        text = text_field.preprocess(text)
+        text = [[text_field.vocab.stoi[x] for x in text]]
+        x = text_field.tensor_type(text)
+        x = autograd.Variable(x, volatile=True)
+        if cuda_flag:
+            x = x.cuda()
+        #print("---0---")
+        #print(x)
+        output = model(x)
+        logger.info('\t'.join([str(float(x)) for x in output[0]]))
+        first, predicted = torch.max(output, 1)
+        '''
+        print("---1---")
+        print(first)
+        print(predicted)
+        print("---2---")
+        print(label_feild.vocab.itos)
+        print("---3---")
+        print(predicted.data)
+        print("---4---")
+        print(output)
+        '''
+        return label_feild.vocab.itos[predicted.data[0] + 1]
+        # return label_feild.vocab.itos[predicted.data[0][0]+1]
+    # TODO this is a temp fix for p@k, undo this and figure it out
+    except:
+        logger.info('\t'.join(['input', 'too small']))
+
 
 def save(model, save_dir, save_prefix, steps):
     if not os.path.isdir(save_dir):

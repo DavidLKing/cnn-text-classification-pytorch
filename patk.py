@@ -15,22 +15,10 @@ def patk(rankedData, num):
     # cheap and dirty code duplication
     for i in range(num):
         line = rankedData[i].split('\t')
-        if line[1] == 'negative':
-            if line[5] == 'y' and line[6] == 'y':
-                negToHum += 1
-            elif line[5] == 'y' or line[6] == 'y':
-                negToMay += 1
-            else:
-                assert(line[5] == 'n' or line[6] == 'n')
-                negToComp += 1
-        if line[1] == 'positive':
-            if line[5] == 'y' and line[6] == 'y':
-                posToHum += 1
-            elif line[5] == 'y' or line[6] == 'y':
-                posToMay += 1
-            else:
-                assert(line[5] == 'n' or line[6] == 'n')
-                posToComp += 1
+        if line[2] == 'y' and line[3] == 'y':
+            posToHum += 1
+        elif line[2] == 'y' or line[3] == 'y':
+            posToMay += 1
     print("p@", num, '\n',
             # "negToHum", negToHum / num, '\n',
             # "negToMay", (negToMay + negToHum) /num, '\n',

@@ -40,8 +40,9 @@ parser.add_argument('-snapshot', type=str, default=None, help='filename of model
 parser.add_argument('-predict', type=str, default=None, help='predict the sentence given')
 parser.add_argument('-log', type=str, default='log.txt', help='Logging file, default = log.txt')
 parser.add_argument('-test', action='store_true', default=False, help='train or test')
+parser.add_argument('-conf', action='store_true', default=False, help='confidence test')
 args = parser.parse_args()
-
+# pdb.set_trace()
 
 # Adding logging
 logger = logging.getLogger(__name__)
@@ -84,13 +85,25 @@ def getTest(text_field, label_field, **kargs):
                                 **kargs)
     return train_iter, dev_iter
 
+def getConf(text_field, label_field, **kargs):
+    train_data, dev_data = mydatasets.confMR.splits(text_field, label_field)
+    text_field.build_vocab(train_data, dev_data)
+    label_field.build_vocab(train_data, dev_data)
+    train_iter, dev_iter = data.Iterator.splits(
+                                (train_data, dev_data),
+                                batch_sizes=(args.batch_size, len(dev_data)),
+                                **kargs)
+    return train_iter, dev_iter
+
 # load data
 print("\nLoading data...")
 text_field = data.Field(lower=True)
 label_field = data.Field(sequential=False)
 train_iter, dev_iter = mr(text_field, label_field, device=-1, repeat=False)
-dump, test_iter = getTest(text_field, label_field, device=-1, repeat=False)
-pdb.set_trace()
+if args.test:
+    dump, test_iter = getTest(text_field, label_field, device=-1, repeat=False)
+elif args.conf:
+    dump, test_iter = getConf(text_field, label_field, device=-1, repeat=False)
 #train_iter, dev_iter, test_iter = sst(text_field, label_field, device=-1, repeat=False)
 
 
@@ -124,6 +137,11 @@ if args.predict is not None:
 elif args.test:
     try:
         train.eval(test_iter, cnn, args) 
+    except Exception as e:
+        print("\nSorry. The test dataset doesn't  exist.\n")
+elif args.conf:
+    try:
+        train.eval(test_iter, cnn, args)
     except Exception as e:
         print("\nSorry. The test dataset doesn't  exist.\n")
 else:
